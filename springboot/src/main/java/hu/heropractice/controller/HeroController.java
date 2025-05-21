@@ -1,45 +1,56 @@
 package hu.heropractice.controller;
 
-import hu.heropractice.dto.HeroCreate;
-import hu.heropractice.dto.HeroRead;
-import hu.heropractice.dto.HeroUpdate;
+import hu.heropractice.dto.CreateHero;
+import hu.heropractice.dto.ListHero;
+import hu.heropractice.dto.ReadHero;
+import hu.heropractice.dto.UpdateHero;
 import hu.heropractice.service.HeroService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.processing.Generated;
+import java.util.List;
 
 @RestController
 @RequestMapping("/hero")
-@Tag(name = "Hero API")
+@Tag(name = "Hero operations")
 public class HeroController {
 
     @Autowired
     HeroService service;
 
+    @GetMapping
+    @Operation(summary = "List all heros")
+    public List<ListHero> list() {
+        return service.list();
+    }
 
     @GetMapping("{id}")
-    @Operation(summary = "Get a hero")
-    public HeroRead get(@PathVariable int id) {
+    @Operation(summary = "Get hero")
+    public ReadHero get(@PathVariable int id) {
         return service.get(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a hero")
-    public HeroRead create(@RequestBody @Valid HeroCreate newHero) {
+    @Operation(summary = "Create hero")
+    public ReadHero create(@RequestBody @Valid CreateHero newHero) {
         return service.create(newHero);
     }
 
     @PutMapping("{id}")
-    @Operation(summary = "Update a hero")
-    public HeroRead update(@RequestBody @Valid HeroUpdate updateHero, @PathVariable int id) {
+    @Operation(summary = "Update Hero")
+    public ReadHero update(@RequestBody @Valid UpdateHero updateHero, @PathVariable int id) {
         return service.update(updateHero, id);
     }
+
+    @DeleteMapping("{id}")
+    @Operation(summary = "Delete hero by Id")
+    public ReadHero delete(@PathVariable int id) {
+        return service.delete(id);
+    }
+
 }

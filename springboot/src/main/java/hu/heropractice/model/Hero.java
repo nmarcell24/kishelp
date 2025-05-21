@@ -1,19 +1,21 @@
-package hu.heropractice.models;
+package hu.heropractice.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 public class Hero {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String name;
     private String nationality;
     private boolean canFly;
     @ManyToOne
+    @JoinColumn(name = "weapon_id")
     private Weapon weapon;
 
 }
